@@ -446,6 +446,7 @@
             if (agirEngelli && engelliSayisi === 0) {
                 sonucDiv.className = 'uygun-degil';
                 sonucDiv.innerHTML = 'Lütfen hanede bulunan ağır engelli birey sayısını belirtiniz.';
+                scrollToResults();
                 return;
             }
 
@@ -465,6 +466,7 @@
             if (toplamYetiskin === 0) {
                 sonucDiv.className = 'uygun-degil';
                 sonucDiv.innerHTML = 'Hanede en az bir yetişkin birey (18 yaş ve üzeri) bulunmak zorundadır.';
+                scrollToResults();
                 return;
             }
 
@@ -510,6 +512,12 @@
             }
             
             sonucDiv.innerHTML = mesaj;
+            scrollToResults();
+        }
+
+        function scrollToResults() {
+            const sonucDiv = document.getElementById('sonuc');
+            sonucDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     </script>
 </body>
