@@ -198,6 +198,13 @@
             const engelliSayisi = agirEngelli ? (parseInt(document.getElementById('engelliSayisi').value) || 0) : 0;
             
             const sonucDiv = document.getElementById('sonuc');
+
+            if (agirEngelli && engelliSayisi === 0) {
+                sonucDiv.className = 'uygun-degil';
+                sonucDiv.innerHTML = 'Lütfen hanede bulunan ağır engelli birey sayısını belirtiniz.';
+                return;
+            }
+
             let uygun = false;
             let mesaj = '';
 
