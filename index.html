@@ -259,22 +259,61 @@
             transition: all 0.4s ease-in-out;
         }
 
-        .odeme-detay p {
-            margin: 12px 0;
-            position: relative;
-            padding-left: 20px;
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(220, 53, 69, 0.1);
         }
 
-        .odeme-detay p::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #dc3545;
+        .payment-table th,
+        .payment-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(220, 53, 69, 0.1);
         }
 
-        .odeme-detay p strong {
+        .payment-table th {
+            background-color: #dc3545;
+            color: #fff;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .payment-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .payment-table tr:nth-child(even) {
+            background-color: #fff5f5;
+        }
+
+        .payment-table .total-row {
             font-weight: 600;
+            color: #dc3545;
             font-size: 18px;
+            background-color: #fff !important;
+        }
+
+        .payment-table .total-row td {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .payment-note {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background: #fff5f5;
+            border-radius: 10px;
+            color: #dc3545;
+            font-size: 14px;
+            line-height: 1.5;
+            border-left: 4px solid #dc3545;
         }
 
         select.input100 {
@@ -492,23 +531,52 @@
 
                 mesaj += `
                     <div class="odeme-detay">
-                        <p>Toplam Hane Nüfusu: ${toplamBirey} kişi</p>
-                        <p>Kişi Başı Yardım Tutarı: ${KISI_BASI_YARDIM.toLocaleString('tr-TR')} ₺</p>
-                        <p>Temel Yardım Tutarı: ${temelYardim.toLocaleString('tr-TR')} ₺</p>`;
+                        <table class="payment-table">
+                            <thead>
+                                <tr>
+                                    <th>Kategori</th>
+                                    <th>Detay</th>
+                                    <th>Tutar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Toplam Hane Nüfusu</td>
+                                    <td>${toplamBirey} kişi</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>Kişi Başı Yardım</td>
+                                    <td>${toplamBirey} kişi × ${KISI_BASI_YARDIM.toLocaleString('tr-TR')} ₺</td>
+                                    <td>${temelYardim.toLocaleString('tr-TR')} ₺</td>
+                                </tr>`;
                 
                 if (agirEngelli) {
                     mesaj += `
-                        <p>Ağır Engelli Sayısı: ${engelliSayisi} kişi</p>
-                        <p>Engelli Ek Yardım Tutarı: ${engelliYardim.toLocaleString('tr-TR')} ₺</p>`;
-                }
-
-                if (yasliSayisi > 0) {
-                    mesaj += `<p>Not: 65 yaş ve üzeri birey bulunduğu için kişi başı yardım tutarı 700₺ olarak hesaplanmıştır.</p>`;
+                                <tr>
+                                    <td>Engelli Ek Yardım</td>
+                                    <td>${engelliSayisi} kişi × ${ENGELLI_EK_YARDIM.toLocaleString('tr-TR')} ₺</td>
+                                    <td>${engelliYardim.toLocaleString('tr-TR')} ₺</td>
+                                </tr>`;
                 }
 
                 mesaj += `
-                        <p><strong>Toplam Yardım Tutarı: ${toplamYardim.toLocaleString('tr-TR')} ₺</strong></p>
-                    </div>`;
+                                <tr class="total-row">
+                                    <td>Toplam Yardım Tutarı</td>
+                                    <td></td>
+                                    <td>${toplamYardim.toLocaleString('tr-TR')} ₺</td>
+                                </tr>
+                            </tbody>
+                        </table>`;
+
+                if (yasliSayisi > 0) {
+                    mesaj += `
+                        <div class="payment-note">
+                            Not: 65 yaş ve üzeri birey bulunduğu için kişi başı yardım tutarı 700₺ olarak hesaplanmıştır.
+                        </div>`;
+                }
+
+                mesaj += `</div>`;
             }
             
             sonucDiv.innerHTML = mesaj;
