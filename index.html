@@ -83,10 +83,11 @@
             font-size: 24px;
             color: #dc3545;
             line-height: 1.2;
-            text-align: left;
+            text-align: right;
             font-weight: 600;
             letter-spacing: 1px;
             margin: 0;
+            order: 2;
         }
 
         .contact100-form-title {
@@ -96,6 +97,7 @@
         .menu-container {
             display: flex;
             gap: 20px;
+            order: 1;
         }
 
         .menu-item {
@@ -110,6 +112,126 @@
 
         .menu-item:hover {
             background: #fff5f5;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1001;
+            position: relative;
+        }
+
+        .menu-toggle span {
+            height: 3px;
+            width: 100%;
+            background-color: #dc3545;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            transform-origin: left;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg);
+        }
+
+        .menu-items {
+            display: flex;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .menu-items {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 250px;
+                height: 100vh;
+                background: white;
+                padding: 80px 20px 20px;
+                box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+                flex-direction: column;
+                gap: 15px;
+                z-index: 999;
+            }
+
+            .menu-items.active {
+                display: flex;
+            }
+
+            .menu-container {
+                position: static;
+            }
+
+            .menu-toggle {
+                position: relative;
+                z-index: 1001;
+            }
+
+            .menu-item {
+                width: 100%;
+                text-align: left;
+                padding: 12px;
+                border-radius: 10px;
+            }
+
+            .menu-item:hover {
+                background: #fff5f5;
+            }
+
+            .menu-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 998;
+            }
+
+            .menu-overlay.active {
+                display: block;
+            }
+
+            .wrap-contact100 {
+                padding: 40px 25px 30px 25px;
+            }
+            
+            .form-header {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 15px;
+            }
+
+            .header-title {
+                font-size: 20px;
+            }
+
+            .input100 {
+                padding: 0 25px;
+            }
+
+            .checkbox-container {
+                padding: 20px 25px;
+            }
         }
 
         /* Modal Styles */
@@ -377,35 +499,6 @@
             padding-right: 50px;
         }
 
-        @media (max-width: 768px) {
-            .wrap-contact100 {
-                padding: 40px 25px 30px 25px;
-            }
-            
-            .form-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-
-            .header-title {
-                font-size: 20px;
-            }
-
-            .menu-container {
-                width: 100%;
-                justify-content: flex-start;
-            }
-
-            .input100 {
-                padding: 0 25px;
-            }
-
-            .checkbox-container {
-                padding: 20px 25px;
-            }
-        }
-
         .uygun-degil {
             background-color: #ffe6e6;
             color: #dc3545;
@@ -582,6 +675,36 @@
                 font-size: 12px;
                 padding: 10px;
             }
+
+            /* Sonuç kısmı için mobil font boyutları */
+            .sonuc-baslik {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            .payment-table th {
+                font-size: 13px;
+                padding: 12px;
+            }
+
+            .payment-table td {
+                font-size: 14px;
+                padding: 12px;
+            }
+
+            .payment-table .total-row {
+                font-size: 16px;
+            }
+
+            .payment-note {
+                font-size: 13px;
+                padding: 12px 15px;
+            }
+
+            #sonuc {
+                font-size: 14px;
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -589,11 +712,19 @@
     <div class="container-contact100">
         <div class="wrap-contact100">
             <div class="form-header">
-                <span class="header-title">SUY/T-SUY Uygunluk Kontrolü</span>
                 <div class="menu-container">
-                    <a href="#" class="menu-item" onclick="showKriterler()">Kriterler</a>
-                    <a href="mailto:muhammed.aydin@kizilay.org.tr?subject=Geliştirme önerisi" class="menu-item">İletişim</a>
+                    <div class="menu-toggle" onclick="toggleMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="menu-items">
+                        <a href="#" class="menu-item" onclick="showKriterler()">Kriterler</a>
+                        <a href="mailto:muhammed.aydin@kizilay.org.tr?subject=Geliştirme önerisi" class="menu-item">İletişim</a>
+                    </div>
+                    <div class="menu-overlay" onclick="toggleMenu()"></div>
                 </div>
+                <span class="header-title">SUY/T-SUY Uygunluk Kontrolü</span>
             </div>
 
             <!-- Modal -->
@@ -965,6 +1096,45 @@
                 closeKriterler();
             }
         }
+
+        function toggleMenu() {
+            const menuItems = document.querySelector('.menu-items');
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            menuItems.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            document.body.style.overflow = menuItems.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menuContainer = document.querySelector('.menu-container');
+            const menuItems = document.querySelector('.menu-items');
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            
+            if (!menuContainer.contains(event.target) && menuItems.classList.contains('active')) {
+                menuItems.classList.remove('active');
+                menuToggle.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
