@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUY Kriterleri</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .suy-container {
+            width: 100%;
+            max-width: 800px;
+            padding: 50px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .suy-title {
+            color: #2d3748;
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .suy-criteria {
+            list-style: none;
+            margin-bottom: 20px;
+            counter-reset: criteria;
+            padding-right: 20px;
+        }
+
+        .suy-criteria[start="2"] {
+            counter-reset: criteria 1;
+        }
+
+        .suy-criteria li {
+            display: flex;
+            align-items: flex-start;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #4a5568;
+            background: #fff;
+            padding: 25px 30px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .suy-criteria li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border-color: #e53e3e;
+            background: #fff5f5;
+        }
+
+        .suy-criteria li:before {
+            counter-increment: criteria;
+            content: counter(criteria);
+            min-width: 45px;
+            height: 45px;
+            background: #e53e3e;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 25px;
+            margin-top: 0;
+            font-weight: 700;
+            font-size: 22px;
+            box-shadow: 0 4px 6px rgba(229, 62, 62, 0.2);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            width: 100%;
+            opacity: 0;
+            transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .accordion-content.active {
+            max-height: 1000px;
+            opacity: 1;
+            padding-top: 20px;
+        }
+
+        .accordion-trigger {
+            position: relative;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .accordion-trigger:after {
+            content: '+';
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: #e53e3e;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-trigger.active:after {
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .suy-table {
+            width: 96%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 0 1px #e2e8f0;
+         }
+
+        .suy-table td {
+            padding: 20px;
+            text-align: center;
+            vertical-align: middle;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .suy-table tr:first-child td:nth-child(-n+4) {
+            border-bottom: none;
+        }
+
+        .suy-table tr:first-child td:nth-child(2),
+        .suy-table tr:first-child td:nth-child(3),
+        .suy-table tr:first-child td:nth-child(4) {
+            border-bottom: 2px solid #e53e3e;
+        }
+
+        .suy-highlight {
+            color: #e53e3e;
+            font-weight: 600;
+            display: block;
+            font-size: 16px;
+        }
+
+        .suy-formula {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .suy-formula.operator {
+            color: #e53e3e;
+            font-weight: 700;
+        }
+
+        .suy-formula.result {
+            color: #2d3748;
+            font-weight: 700;
+            padding: 12px 25px;
+            border-radius: 6px;
+        }
+
+        .suy-table strong {
+            color: #4a5568;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .suy-note {
+            width: 96%;
+            font-size: 14px;
+            color: #4a5568;
+            margin: 5px auto;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .suy-note:before {
+            content: "※";
+            color: #e53e3e;
+            font-size: 18px;
+            margin-right: 15px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .suy-container {
+                padding: 30px 20px;
+            }
+
+            .suy-title {
+                font-size: 28px;
+                margin-bottom: 40px;
+            }
+
+            .suy-criteria li {
+                font-size: 14px;
+                padding: 20px;
+            }
+
+            .suy-table td {
+                padding: 15px;
+            }
+
+            .suy-formula {
+                font-size: 20px;
+            }
+
+            .suy-highlight {
+                font-size: 14px;
+            }
+
+            .suy-note {
+                padding: 15px 20px;
+                font-size: 13px;
+            }
+        }
+
+        .suy-table td:hover {
+            background: #fff5f5;
+        }
+
+        .suy-table td.vertical-text {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            padding: 15px;
+            font-weight: 400;
+            color: #4a5568;
+            background: #fff;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        .suy-table td.vertical-text:hover {
+            background: #fff5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="suy-container">
+        <h2 class="suy-title">SUY Kriterleri</h2>
+        
+        <ol class="suy-criteria">
+            <li class="accordion-trigger">
+                Hanedeki 18-64 yaş arası her yetişkin erkek bireyin bakmakla yükümlü olduğu bağımlı birey oranı 1.5 veya üzeri olmalıdır.
+            </li>
+            <div class="accordion-content">
+                <table class="suy-table">
+                    <tr>
+                        <td rowspan="2" class="vertical-text">Kriter Hesaplaması</td>
+                        <td>
+                            <span class="suy-highlight">0 - 17 Yaş Arası</span>
+                            <strong>Çocuk Sayısı</strong>
+                        </td>
+                        <td class="suy-formula operator">+</td>
+                        <td>
+                            <span class="suy-highlight">65 Yaş ve Üzeri</span>
+                            <strong>Erkek / Kadın Birey sayısı</strong>
+                        </td>
+                        <td rowspan="2" class="suy-formula operator">≥</td>
+                        <td rowspan="2" class="suy-formula result">1.5</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <span class="suy-highlight">18-64 Yaş Arası</span>
+                            <strong>Erkek Birey Sayısı</strong>
+                        </td>
+                    </tr>
+                </table>
+
+                <p class="suy-note">Bağımlı Birey: 0-17 yaş arasındaki çocuk ve 65 yaş ve üzeri yetişkinleri kapsamaktadır.</p>
+                <p class="suy-note">Çalışabilir yaş aralığındaki (16-64 yaş) erkek bireyler kriter hesaplamasına dahil edilmekte ancak ödeme almamaktadır.</p>
+            </div>
+        </ol>
+
+        <ol class="suy-criteria" start="2">
+            <li>Hanede 18-64 yaş arası yetişkin erkek birey yoksa; Hanedeki 18-64 yaş arasındaki yetişkin kadın birey sayısı 2'yi, toplam birey sayısı ise 6'yı geçmemelidir.</li>
+        </ol>
+    </div>
+
+    <script>
+        document.querySelectorAll('.accordion-trigger').forEach(trigger => {
+            trigger.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                
+                // If this accordion is already active, close it
+                if (this.classList.contains('active')) {
+                    this.classList.remove('active');
+                    content.classList.remove('active');
+                    return;
+                }
+                
+                // Close all accordions
+                document.querySelectorAll('.accordion-trigger').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('active'));
+                
+                // Open clicked accordion
+                this.classList.add('active');
+                if (content && content.classList.contains('accordion-content')) {
+                    content.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
