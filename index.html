@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUY/T-SUY Uygunluk Kontrolü</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -68,15 +70,90 @@
             transform: rotate(-12deg);
         }
 
-        .contact100-form-title {
-            display: block;
-            font-size: 32px;
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid#fdc6cc;
+            padding-bottom: 40px;
+        }
+
+        .header-title {
+            font-size: 24px;
             color: #dc3545;
             line-height: 1.2;
-            text-align: center;
-            padding-bottom: 43px;
+            text-align: left;
             font-weight: 600;
             letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .contact100-form-title {
+            display: none;
+        }
+
+        .menu-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .menu-item {
+            color: #dc3545;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .menu-item:hover {
+            background: #fff5f5;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            color: #dc3545;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: #fff5f5;
         }
 
         .wrap-input100 {
@@ -231,78 +308,51 @@
             border-radius: 20px;
             font-size: 16px;
             line-height: 1.6;
-            border: 2px solid transparent;
-            transition: all 0.4s ease-in-out;
+            background: #fff;
+            box-shadow: 0 3px 10px rgba(220, 53, 69, 0.1);
         }
 
-        .uygun {
-            background-color: #dc3545;
-            color: #fff;
-            box-shadow: 0 5px 20px rgba(220, 53, 69, 0.2);
-        }
-
-        .uygun-degil {
-            background-color: #fff5f5;
+        .sonuc-baslik {
+            font-size: 24px;
+            margin-bottom: 30px;
+            font-weight: 500;
             color: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .odeme-detay {
-            margin-top: 25px;
-            padding: 25px 30px;
-            background: #fff5f5;
-            color: #dc3545;
-            border-radius: 20px;
-            font-size: 16px;
-            line-height: 1.6;
-            border: 2px solid transparent;
-            transition: all 0.4s ease-in-out;
         }
 
         .payment-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-            background: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(220, 53, 69, 0.1);
+            margin: 20px 0;
         }
 
         .payment-table th,
         .payment-table td {
-            padding: 15px 20px;
+            padding: 15px;
             text-align: left;
             border-bottom: 1px solid rgba(220, 53, 69, 0.1);
         }
 
         .payment-table th {
-            background-color: #dc3545;
-            color: #fff;
+            color: #dc3545;
             font-weight: 500;
-            text-transform: uppercase;
             font-size: 14px;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
+            padding-bottom: 20px;
         }
 
         .payment-table tr:last-child td {
             border-bottom: none;
         }
 
-        .payment-table tr:nth-child(even) {
-            background-color: #fff5f5;
-        }
-
         .payment-table .total-row {
             font-weight: 600;
             color: #dc3545;
             font-size: 18px;
-            background-color: #fff !important;
         }
 
         .payment-table .total-row td {
-            padding-top: 20px;
-            padding-bottom: 20px;
+            padding-top: 25px;
         }
 
         .payment-note {
@@ -332,9 +382,19 @@
                 padding: 40px 25px 30px 25px;
             }
             
-            .contact100-form-title {
-                font-size: 28px;
-                padding-bottom: 35px;
+            .form-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .header-title {
+                font-size: 20px;
+            }
+
+            .menu-container {
+                width: 100%;
+                justify-content: flex-start;
             }
 
             .input100 {
@@ -344,9 +404,183 @@
             .checkbox-container {
                 padding: 20px 25px;
             }
+        }
 
-            .odeme-detay {
-                padding: 20px 25px;
+        .uygun-degil {
+            background-color: #ffe6e6;
+            color: #dc3545;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .uygun {
+            background-color: #fff;
+        }
+
+        /* Kriterler Styles */
+        .suy-title {
+            color: #2d3748;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .accordion-button {
+            padding: 1.25rem;
+            font-size: 16px;
+            color: #4a5568;
+            background-color: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px !important;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .accordion-button::before {
+            content: attr(data-number);
+            min-width: 36px;
+            height: 36px;
+            background: #dc3545;
+            color: #fff;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 20px;
+            margin-right: 5px;
+            flex-shrink: 0;
+        }
+
+        .accordion-button span {
+            padding: 0 5px;
+            flex: 1;
+        }
+
+        .accordion-button:not(.collapsed) {
+            color: #dc3545;
+            background-color: #fff5f5;
+            box-shadow: none;
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: #dc3545;
+        }
+
+        .accordion-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px !important;
+            margin-bottom: 20px;
+            overflow: visible;
+            position: relative;
+            z-index: 1;
+        }
+
+        .accordion-body {
+            padding: 1.25rem;
+            background-color: #fff;
+        }
+
+        .suy-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 0 1px #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        .suy-table td {
+            padding: 15px;
+            text-align: center;
+            vertical-align: middle;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .suy-table tr:first-child td:nth-child(2),
+        .suy-table tr:first-child td:nth-child(3),
+        .suy-table tr:first-child td:nth-child(4) {
+            border-bottom: 2px solid #dc3545;
+        }
+
+        .suy-highlight {
+            color: #dc3545;
+            font-weight: 600;
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .suy-formula {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .suy-formula.operator {
+            color: #dc3545;
+        }
+
+        .suy-formula.result {
+            background-color: #fff;
+            padding: 8px 15px;
+            border-radius: 6px;
+        }
+
+        .suy-note {
+            font-size: 14px;
+            color: #4a5568;
+            margin: 10px 0;
+            padding: 12px 15px;
+            background: #fff5f5;
+            border-radius: 6px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .vertical-text {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            padding: 15px;
+            font-weight: 500;
+            color: #4a5568;
+            background: #fff5f5;
+        }
+
+        @media (max-width: 768px) {
+            .suy-title {
+                font-size: 24px;
+                margin-bottom: 25px;
+            }
+
+            .accordion-button {
+                font-size: 14px;
+                padding: 1rem;
+            }
+
+            .suy-table td {
+                padding: 10px;
+            }
+
+            .suy-highlight {
+                font-size: 12px;
+            }
+
+            .suy-formula {
+                font-size: 16px;
+            }
+
+            .suy-note {
+                font-size: 12px;
+                padding: 10px;
             }
         }
     </style>
@@ -354,7 +588,74 @@
 <body>
     <div class="container-contact100">
         <div class="wrap-contact100">
-            <span class="contact100-form-title">SUY/T-SUY Uygunluk Kontrolü</span>
+            <div class="form-header">
+                <span class="header-title">SUY/T-SUY Uygunluk Kontrolü</span>
+                <div class="menu-container">
+                    <a href="#" class="menu-item" onclick="showKriterler()">Kriterler</a>
+                    <a href="mailto:muhammed.aydin@kizilay.org.tr?subject=Geliştirme önerisi" class="menu-item">İletişim</a>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div id="kriterlerModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closeKriterler()">&times;</span>
+                    <div id="kriterlerContent">
+                        <h2 class="suy-title">SUY Kriterleri</h2>
+                        
+                        <div class="accordion" id="suyAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" data-number="1">
+                                        <span>Hanedeki 18-64 yaş arası her yetişkin erkek bireyin bakmakla yükümlü olduğu bağımlı birey oranı 1.5 veya üzeri olmalıdır.</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#suyAccordion">
+                                    <div class="accordion-body">
+                                        <table class="suy-table">
+                                            <tr>
+                                                <td rowspan="2" class="vertical-text">Kriter Hesaplaması</td>
+                                                <td>
+                                                    <span class="suy-highlight">0 - 17 Yaş Arası</span>
+                                                    <strong>Çocuk Sayısı</strong>
+                                                </td>
+                                                <td class="suy-formula operator">+</td>
+                                                <td>
+                                                    <span class="suy-highlight">65 Yaş ve Üzeri</span>
+                                                    <strong>Erkek / Kadın Birey sayısı</strong>
+                                                </td>
+                                                <td rowspan="2" class="suy-formula operator">≥</td>
+                                                <td rowspan="2" class="suy-formula result">1.5</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <span class="suy-highlight">18-64 Yaş Arası</span>
+                                                    <strong>Erkek Birey Sayısı</strong>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <p class="suy-note">Bağımlı Birey: 0-17 yaş arasındaki çocuk ve 65 yaş ve üzeri yetişkinleri kapsamaktadır.</p>
+                                        <p class="suy-note">Çalışabilir yaş aralığındaki (16-64 yaş) erkek bireyler kriter hesaplamasına dahil edilmekte ancak ödeme almamaktadır.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" data-number="2">
+                                        <span>Hanede 18-64 yaş arası yetişkin erkek birey yoksa; Hanedeki 18-64 yaş arasındaki yetişkin kadın birey sayısı 2'yi, toplam birey sayısı ise 6'yı geçmemelidir.</span>
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#suyAccordion">
+                                    <div class="accordion-body">
+                                        <p class="suy-note">Bu kriter, hanede yetişkin erkek birey bulunmadığı durumlarda geçerlidir.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
             <div class="wrap-input100">
                 <span class="label-input100">0-17 Yaş Arası Çocuk Sayısı</span>
@@ -427,8 +728,18 @@
 
             <div class="wrap-input100" id="engelliSayisiDiv" style="display: none;">
                 <span class="label-input100">Ağır Engelli Birey Sayısı</span>
-                <input type="number" id="engelliSayisi" class="input100" min="0" value="0">
+                <select id="engelliSayisi" class="input100" onchange="handleNumberInput(this)">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="manual">6'dan fazla</option>
+                </select>
                 <span class="focus-input100"></span>
+                <input type="number" id="engelliSayisi_manual" class="input100" style="display: none; margin-top: 10px;" min="7" value="7">
             </div>
 
             <div class="container-contact100-form-btn">
@@ -441,6 +752,9 @@
         </div>
     </div>
 
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function handleNumberInput(selectElement) {
             const manualInput = document.getElementById(selectElement.id + '_manual');
@@ -478,7 +792,7 @@
             const yasliSayisi = getValue('yasliSayisi');
             const yetiskinKadin = getValue('yetiskinKadin');
             const agirEngelli = document.getElementById('agirEngelli').checked;
-            const engelliSayisi = agirEngelli ? (parseInt(document.getElementById('engelliSayisi').value) || 0) : 0;
+            const engelliSayisi = agirEngelli ? getValue('engelliSayisi') : 0;
             
             const sonucDiv = document.getElementById('sonuc');
 
@@ -525,82 +839,132 @@
             sonucDiv.className = uygun ? 'uygun' : 'uygun-degil';
             
             if (uygun) {
-                const temelYardim = toplamBirey * KISI_BASI_YARDIM;
+                const odemeyeDahilBirey = cocukSayisi + yetiskinKadin + yasliSayisi;
+                const temelYardim = odemeyeDahilBirey * KISI_BASI_YARDIM;
                 const engelliYardim = engelliSayisi * ENGELLI_EK_YARDIM;
                 const toplamYardim = temelYardim + engelliYardim;
 
-                mesaj += `
-                    <div class="odeme-detay">
-                        <table class="payment-table">
-                            <thead>
-                                <tr>
-                                    <th>Kategori</th>
-                                    <th>Detay</th>
-                                    <th>Tutar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Toplam Hane Nüfusu</td>
-                                    <td>${toplamBirey} kişi</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>Kişi Başı Yardım</td>
-                                    <td>${toplamBirey} kişi × ${KISI_BASI_YARDIM.toLocaleString('tr-TR')} ₺</td>
-                                    <td>${temelYardim.toLocaleString('tr-TR')} ₺</td>
-                                </tr>`;
+                // Form içeriğini gizle
+                const formElements = document.querySelectorAll('.wrap-input100, .checkbox-container, .container-contact100-form-btn');
+                formElements.forEach(el => el.style.display = 'none');
+
+                // Yardım kategorilerini hazırla
+                let kategoriler = [];
+                if (cocukSayisi > 0) kategoriler.push(`${cocukSayisi} çocuk`);
+                if (yetiskinKadin > 0) kategoriler.push(`${yetiskinKadin} yetişkin kadın`);
+                if (yasliSayisi > 0) kategoriler.push(`${yasliSayisi} yaşlı birey`);
+                const kategoriDetay = kategoriler.join(', ');
+
+                mesaj = `
+                    <div class="sonuc-baslik">Hane yardıma uygundur.</div>
+                    <table class="payment-table">
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>Detay</th>
+                                <th>Tutar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Toplam Hane Nüfusu</td>
+                                <td>${toplamBirey} kişi (Ödemeye dahil: ${odemeyeDahilBirey} kişi)</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>Yardıma Dahil Bireyler</td>
+                                <td>${kategoriDetay}</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>Kişi Başı Yardım</td>
+                                <td>${odemeyeDahilBirey} kişi × ${KISI_BASI_YARDIM.toLocaleString('tr-TR')} ₺</td>
+                                <td>${temelYardim.toLocaleString('tr-TR')} ₺</td>
+                            </tr>`;
                 
                 if (agirEngelli) {
                     mesaj += `
-                                <tr>
-                                    <td>Engelli Ek Yardım</td>
-                                    <td>${engelliSayisi} kişi × ${ENGELLI_EK_YARDIM.toLocaleString('tr-TR')} ₺</td>
-                                    <td>${engelliYardim.toLocaleString('tr-TR')} ₺</td>
-                                </tr>`;
+                            <tr>
+                                <td>Engelli Ek Yardım</td>
+                                <td>${engelliSayisi} kişi × ${ENGELLI_EK_YARDIM.toLocaleString('tr-TR')} ₺</td>
+                                <td>${engelliYardim.toLocaleString('tr-TR')} ₺</td>
+                            </tr>`;
                 }
 
                 mesaj += `
-                                <tr class="total-row">
-                                    <td>Toplam Yardım Tutarı</td>
-                                    <td></td>
-                                    <td>${toplamYardim.toLocaleString('tr-TR')} ₺</td>
-                                </tr>
-                            </tbody>
-                        </table>`;
+                            <tr class="total-row">
+                                <td>Toplam Yardım Tutarı</td>
+                                <td></td>
+                                <td>${toplamYardim.toLocaleString('tr-TR')} ₺</td>
+                            </tr>
+                        </tbody>
+                    </table>`;
 
-                if (yasliSayisi > 0) {
+                if (yasliSayisi > 0 && !agirEngelli) {
                     mesaj += `
                         <div class="payment-note">
                             Not: 65 yaş ve üzeri birey bulunduğu için kişi başı yardım tutarı 700₺ olarak hesaplanmıştır.
                         </div>`;
                 }
 
-                mesaj += `</div>`;
+                // Yeni sorgulama butonu ekle
+                mesaj += `
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="contact100-form-btn" onclick="resetForm()" style="margin: 0 auto;">
+                            Yeni Sorgulama Yap
+                        </button>
+                    </div>`;
+            } else {
+                mesaj = `
+                    ${yetiskinErkek > 0 ? 
+                        `Hane yardıma uygun değildir.<br>Bağımlı birey oranı: ${((cocukSayisi + yasliSayisi) / yetiskinErkek).toFixed(2)} (1.5'ten küçük)` : 
+                        'Hane yardıma uygun değildir.<br>(Yetişkin kadın sayısı 2\'den fazla veya toplam birey sayısı 6\'dan fazla)'}`;
             }
             
+            // Sonucu göster
             sonucDiv.innerHTML = mesaj;
             scrollToResults();
+        }
+
+        function resetForm() {
+            // Form elemanlarını göster
+            const formElements = document.querySelectorAll('.wrap-input100, .checkbox-container, .container-contact100-form-btn');
+            formElements.forEach(el => el.style.display = '');
+            
+            // Formu sıfırla
+            document.querySelectorAll('select').forEach(select => select.value = '0');
+            document.getElementById('agirEngelli').checked = false;
+            document.getElementById('engelliSayisiDiv').style.display = 'none';
+            
+            // Sonuç alanını temizle
+            const sonucDiv = document.getElementById('sonuc');
+            sonucDiv.innerHTML = '';
+            sonucDiv.className = '';
         }
 
         function scrollToResults() {
             const sonucDiv = document.getElementById('sonuc');
             sonucDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+
+        // Kriterler Modal Functions
+        function showKriterler() {
+            document.getElementById('kriterlerModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeKriterler() {
+            document.getElementById('kriterlerModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('kriterlerModal');
+            if (event.target === modal) {
+                closeKriterler();
+            }
+        }
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
